@@ -1,0 +1,33 @@
+#slider {
+    width: 600px;
+    height: 400px;
+    margin: 100px auto 0 auto;
+    overflow: hidden;
+    position: relative;
+
+}
+
+#slider .slider-btn{
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    border-radius: 50%;
+    border-width: 0px;
+    background-color: #dedad9;
+    opacity: 0.6;
+}
+#slider .slider-btn:hover{
+    background-color: #b8b8b8;
+}
+
+#left-slider-button{
+    left: 2%;
+}
+
+#right-slider-button{
+    right: 2%;
+}
+
+#slider .slides {
+    display: flex;
+}
