@@ -1,13 +1,17 @@
-#slider {
+.slider-container {
     width: 600px;
     height: 400px;
-    margin: 100px auto 0 auto;
-    overflow: hidden;
+    margin: auto;
     position: relative;
-
+    overflow: hidden;
 }
 
-#slider .slider-btn{
+.slider-slide {
+    display: flex;
+    width: 100%;
+}
+
+.slider-btn{
     position: absolute;
     font-size: 20px;
     top: 50%;
@@ -16,7 +20,7 @@
     background-color: #dedad9;
     opacity: 0.6;
 }
-#slider .slider-btn:hover{
+.slider-btn:hover{
     background-color: #b8b8b8;
 }
 
@@ -26,8 +30,4 @@
 
 #right-slider-button{
     right: 2%;
-}
-
-#slider .slides {
-    display: flex;
 }
