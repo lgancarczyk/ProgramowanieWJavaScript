@@ -1,16 +1,28 @@
 document.querySelector("#left-slider-button").addEventListener('click', moveLeft);
-document.querySelector("#right-slider-button").addEventListener("click", rightClick);
+document.querySelector("#right-slider-button").addEventListener("click", moveRight);
 const sliderNavButtonsContainer = document.querySelector('.slider-nav-buttons-container');
 const sliderSlide = document.querySelector('.slider-slide');
-const slides = document.querySelectorAll(".slide");
 
 const widthPx = 600;
 const slidesCount = 5;
 let counter = 0;
 
-const interval = window.setInterval(moveRight, 5000);
+let moveRightInterval = window.setInterval(moveRight, 5000);
 
-setupSliderNavButtons();
+setup();
+function setup(){
+  setupRandomSlides();
+  setupSliderNavButtons();
+}
+
+function setupRandomSlides(){
+  for (let index = 0; index < slidesCount; index++) {  
+    const el = document.createElement('img');
+    el.setAttribute('class', 'slide');
+    el.setAttribute('src', `https://picsum.photos/600/400?random=${index}`);
+    sliderSlide.appendChild(el);
+  }
+}
 
 function setupSliderNavButtons(){
   for (let index = 0; index < slidesCount; index++) {  
@@ -18,40 +30,48 @@ function setupSliderNavButtons(){
     el.setAttribute('class', 'slide-nav-buutton');
     el.setAttribute('id', `slideNavBuutton${index}`);
     sliderNavButtonsContainer.appendChild(el);
-    el.addEventListener("click", moveToSpecificSlide(index));
+    el.addEventListener("click", (function(){
+      moveToSpecificSlide(index);
+    }));
   }
 }
 
-function moveToSpecificSlide( index ){
-  console.log(index);
-}
-
-function rightClick(){
-  moveRight();
-  clearInterval(interval);
-  const interval = window.setInterval(moveRight, 5000);
+function moveToSpecificSlide( buttonIndex ){
+  resetMoveRightInterval();
+  counter = buttonIndex;
+  transformImages();
 }
 
 function moveRight(){
-  sliderSlide.style.transition = "transform 0.6s ease-in-out";
+  resetMoveRightInterval();
   if (counter <= slidesCount-2){
     counter++;
-    sliderSlide.style.transform = `translateX(${ -widthPx * counter }px)`;
+    transformImages();
   }
   else {
     counter=0;
-    sliderSlide.style.transform = `translateX(${ -widthPx * counter }px)`;
+    transformImages();
   }
 };
 
 function moveLeft(){
-  sliderSlide.style.transition = "transform 0.6s ease-in-out";
+  resetMoveRightInterval();
   if (counter > 0){
     counter--;
-    sliderSlide.style.transform = `translateX(${ -widthPx * counter }px)`;
+    transformImages();
   }
   else {
     counter=slidesCount-1;
-    sliderSlide.style.transform = `translateX(${ -widthPx * counter }px)`;
+    transformImages();
   }
+}
+
+function resetMoveRightInterval(){
+  clearInterval(moveRightInterval);
+  moveRightInterval = window.setInterval(moveRight, 5000);
+}
+
+function transformImages(){
+  sliderSlide.style.transition = "transform 0.6s ease-in-out";
+  sliderSlide.style.transform = `translateX(${ -widthPx * counter }px)`;
 }
