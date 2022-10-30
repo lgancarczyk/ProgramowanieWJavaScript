@@ -17,3 +17,10 @@
     border-bottom-style: solid;
 
 }
+
+.buttonIsRecording{
+    content: "Stop";
+}
+.buttonIsNotRecording{
+    content: "Start";
+}
