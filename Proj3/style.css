@@ -1,0 +1,19 @@
+.soundSources{
+    visibility: hidden;
+    height: 0;
+}
+.soundSchema{
+    display: flex;
+}
+
+.soundSchemaElement{
+    padding-right: 20px;
+    padding-left: 20px;
+
+}
+
+.breakLine{
+    padding-bottom: 10px;
+    border-bottom-style: solid;
+
+}
