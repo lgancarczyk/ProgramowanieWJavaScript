@@ -18,9 +18,9 @@
 
 }
 
-.buttonIsRecording{
+.buttonIsRecording:after{
     content: "Stop";
 }
-.buttonIsNotRecording{
-    content: "Start";
+.buttonIsNotRecording:after{
+    content: 'Start';
 }

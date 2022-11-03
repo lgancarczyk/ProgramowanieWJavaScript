@@ -3,18 +3,19 @@ import {KeyToSound} from './Constants/KeyToSound.js';
 
 
 document.addEventListener('keypress', onKeyPress);
-let StartStopButton = document.querySelector('#startStopRecodingButton').addEventListener('click', changeRecordingStatus)
+const startStopButton = document.querySelector('#startStopRecordingButton')
+startStopButton.addEventListener('click', changeRecordingStatus)
 
 let isRecording = false;
 
 function changeRecordingStatus(){
     if (isRecording == false){
-        isRecording == true;
-        StartStopButton.setAtribute('class', 'buttonIsRecording' )
+        isRecording = true;
+        startStopButton.setAttribute('class', 'buttonIsRecording' )
     }
     else{
-        isRecording == false;
-        StartStopButton.setAtribute('class', 'buttonIsNotRecording' )
+        isRecording = false;
+        startStopButton.setAttribute('class', 'buttonIsNotRecording' );
     }
 }
 
