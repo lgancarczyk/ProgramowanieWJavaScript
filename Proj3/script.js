@@ -5,6 +5,8 @@ import {KeyToSound} from './Constants/KeyToSound.js';
 document.addEventListener('keypress', onKeyPress);
 const startStopButton = document.querySelector('#startStopRecordingButton')
 startStopButton.addEventListener('click', recordingButtonPressed)
+const playSelectedButton = document.querySelector('.playSelectedButton')
+playSelectedButton.addEventListener('click', playSelected)
 
 let isRecording = false;
 const records = [];
@@ -46,10 +48,13 @@ function displayRecord(){
     const newRecordButtonContainer = newRecord.querySelector('.recordContainerButtonsContainer')
     const playButton = newRecordButtonContainer.querySelector('.playRecordButton')
     playButton.setAttribute('id', `play-${records.length-1}`)
-    playButton.addEventListener('click', playRecord)
+    playButton.addEventListener('click', function(){playRecord(event.target.id)})
     const deleteButton = newRecordButtonContainer.querySelector('.deleteRecordButton')
     deleteButton.setAttribute('id', `delete-${records.length-1}`)
     deleteButton.addEventListener('click', deleteRecord)
+    const checkBox = newRecordButtonContainer.querySelector('.selectedCheckbox')
+    checkBox.setAttribute('id', `select-${records.length-1}`)
+
     document.querySelector('.recordsContainer').appendChild(newRecord)
 }
 
@@ -95,12 +100,21 @@ function deleteRecord(ev){
     record.remove()
 }
 
-function playRecord(ev){
-    const record = records[(ev.target.id).slice(-1)]
+function playRecord(id){
+    const record = records[(id).slice(-1)]
     record.forEach(element => {
         const delay = element[1]
         setTimeout(function(){playSound(element[0])}, element[1])
     });
     console.log(record)
+}
+
+function playSelected(){
+    const allCheckbox =  document.querySelectorAll('.selectedCheckbox')
+    allCheckbox.forEach(element => {
+        if (element.checked) {
+            playRecord(element.id.slice(-1))
+        }
+    });
 }
 
