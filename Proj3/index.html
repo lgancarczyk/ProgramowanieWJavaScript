@@ -31,10 +31,24 @@
             <p class="soundSchemaElement">tink: <b>i</b></p>
             <p class="soundSchemaElement">tom: <b>o</b></p>
         </div>
+        <div class="breakLine">
+            <button class="buttonIsNotRecording" id="startStopRecordingButton"></button>
+        </div>
+        <div class="recordsContainer">
+            <!-- record are adden in js without that ID -->
+            <div class="recordContainer" id="egzampleHiddenRecord">
+                <div class="recordContainerButtonsContainer">
+                    <button class="deleteRecordButton">X</button>
+                    <button class="playRecordButton">Play</button>
+                </div>
+                <div class="recordContainerMelodyContainer">
+    
+                </div>
+            </div>
+        </div>
     </div>
-    <div buttonContainer>
-        <button class="buttonIsNotRecording" id="startStopRecordingButton"></button>
-    </div>
+    
+
     
     <script src="script.js" type="module"></script>
 </body>
