@@ -62,6 +62,8 @@ class Ball {
    draw() {
       context.beginPath();
       context.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+      context.fillStyle = '#fdfdfd';
+      context.fill();
       context.lineWidth = 2;
       context.strokeStyle = '#282829';
       context.stroke();
@@ -88,7 +90,21 @@ class Ball {
         this.x += this.velX;
         this.y += this.velY;
     }
-
+  
+    connect(){
+        balls.forEach(ball => {
+            const a = this.x - ball.x
+            const b = this.y - ball.y
+            const c = Math.sqrt( a*a + b*b )
+            if (c < 80) {
+                context.beginPath();
+                context.moveTo(this.x, this.y);
+                context.lineTo(ball.x, ball.y);
+                context.lineWidth = 1;
+                context.stroke();
+            }
+        });
+    }
 }
 
 const balls = [];
@@ -96,11 +112,11 @@ const balls = [];
 function CreateRandomBalls(){
     for (let index = 0; index < GetAmountOfDots(); index++) {
         const size = random(10,15);
-        let velX = random(-3,3)
-        let velY  = random(-3,3)
+        let velX = random(-2,2)
+        let velY  = random(-2,2)
         while (velX ==0 && velY ==0 ) {
-            velX = random(-3,3)
-            velY  = random(-3,3)
+            velX = random(-2,2)
+            velY  = random(-2,2)
         }
         const ball = new Ball(
             random(size,width - size),
@@ -117,9 +133,14 @@ function loop() {
 
     context.clearRect(0, 0, canvas.width, canvas.height)
     for (const ball of balls) {
+        ball.connect();
+    }
+    for (const ball of balls) {
         ball.draw();
         ball.update();
     }
 
    currentLoop = requestAnimationFrame(loop);
 }
+
+// edit loop, so balls wont connect twice
