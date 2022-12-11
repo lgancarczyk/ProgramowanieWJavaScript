@@ -11,14 +11,19 @@
     <div class="contentContainer">
         <div class="menuContainer">
             <div class="buttonsContainer">
-                <button>Start</button>
+                <button id="startButton">Start</button>
                 <button>Stop</button>
                 <button>Reset</button>
             </div>
             <div class="SlidersContainer">
-                <p>Speed</p>
-                <input type="range" min="1" max="100" value="50" class="slider">
-
+                <div class="sliderContainer">
+                    <div class="sliderDescriptionContainer">
+                        <p>Ammount:&nbsp</p>
+                        <p id="rangeAmmount"></p>
+                    </div>
+                    <input type="range" min="1" max="100" value="1" class="slider" id="AmmountSlider">
+                </div>
+                
             </div>
         </div>
         <div class="canvasContainer">

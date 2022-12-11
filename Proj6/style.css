@@ -47,6 +47,13 @@ p{
     background-color: aliceblue;
 }
 
+.sliderDescriptionContainer{
+  display: flex;
+  flex-direction: row;
+}
+
+
+
 .canvasContainer{
     display: flex;
     align-items: center;
