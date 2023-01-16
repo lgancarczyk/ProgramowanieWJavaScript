@@ -1,27 +1,41 @@
 //prztykład odpytywania na konwach 5
 
-document.querySelector(".searchButton").addEventListener('click', GetWeather);
+document.querySelector(".searchButton").addEventListener('click', FindForecast);
 document.addEventListener("DOMContentLoaded", function(){
     LaunchWebsite()
 });
+
 const apiKey = '77b2473f1f828502796df1ad31f99392';
+const mainSearchContainerId = "mainSearchForecast";
+
+async function FindForecast(){
+    let cityNameInput = document.querySelector('.searchInput').value;
+    if (cityNameInput == '') {
+        cityNameInput = 'London';
+    }
+    const mainSearch = document.querySelector(`#${mainSearchContainerId}`)
+
+    const weatherData = await GetWeather(cityNameInput);
+
+    UpdateForecast(weatherData, mainSearch); 
+}
 
 function LaunchWebsite(){
     //load main forecast
     LoadMainForecast()
-
 }
+
 async function LoadMainForecast(){
     let cityNameInput = document.querySelector('.searchInput').value;
     if (cityNameInput == '') {
         cityNameInput = 'London';
     }
-    const id = "mainSearchForecast";
+    
     const weatherData = await GetWeather(cityNameInput);
 
     const egzampleForecast = document.querySelector('#egzampleForecast')
     const newForecast = egzampleForecast.cloneNode(true);
-    newForecast.setAttribute('id', id );
+    newForecast.setAttribute('id', mainSearchContainerId );
 
     const currentSearchContent = document.querySelector(".currentSearchContent");
     currentSearchContent.appendChild(newForecast);
@@ -42,14 +56,14 @@ async function GetCityCoordinatesCall(cityInput){
     const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=5&appid=${apiKey}`)
     const data = await response.json();
     console.log(data)
-    return {name:data[0].name, lat: data[0].lat, lon: data[0].lon}
+    return {name: data[0].name, lat: data[0].lat, lon: data[0].lon}
 }
 
 async function GetWeatherCall(coordinates){
     // const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=hourly,daily&appid=${apiKey}`)
     // const data = await response.json();
 
-    const response = await fetch(`data.json`)
+    const response = await fetch(`${coordinates.name}.json`)
     const data = await response.json();
     console.log(data)
 
