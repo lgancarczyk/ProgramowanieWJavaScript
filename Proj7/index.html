@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <title>Weather</title>
 </head>
 <body>
@@ -13,9 +16,9 @@
             <h3>Pogodynka</h3>
         </div>
         <div class="searchBarContainer">
-            <input class="searchInput" type="text" placeholder="..."/>
-            <button class="searchButton">            
-                <img class="searchIcon" src="Icons/searchIcon.png" alt="?">
+            <input class="searchInput" type="text" placeholder="London?"/>
+            <button class="searchButton">       
+                <i class="fa fa-search searchIcon"></i>     
             </button>
         </div>
         <div class="buttonsContainer">
@@ -23,10 +26,68 @@
         </div>
 
     </div>
+
     <div class="content">
+
+        <div class="currentSearchContent">
+            <!-- example -->
+            <!-- container0 == main container -->
+            <div class="weatherSearchContainer" id="egzampleForecast">
+
+                <div class="weatherupperSection">
+                    <div class="weatherNameAndHourSection">
+                        <h2 class="weatherCityName">
+                            London
+                        </h2>
+                        <h2 class="weatherHour">
+                            12:21
+                        </h2>
+                    </div>
+                    <div class="weatherspecificationSection">
+                        <div class="tempAndIconContainer">
+                            <h4>27^C</h4>
+                            <img src="icons/01d.png" alt="WeatherIcon">
+
+
+                        </div>
+                        <div class="restSpecificationContainer" >
+                            <div class="gridSpecificationContainer humidityContainer">
+                                <h5>HUMIDITY</h5>
+                                <p>70%</p>
+                            </div>
+                            <div class=" gridSpecificationContainer pressureContainer">
+                                <h5>PRESSURE</h5>
+                                <p>1000PHA</p>
+                            </div>
+                            <div class="gridSpecificationContainer windContainer">
+                                <h5>WIND</h5>
+                                <p>20 km/h</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="weatherlowerSection">
+                    <div class="weatherFutureBlock">
+                        <h5>17:50</h5>
+                        <p>17^C</p>
+                        <img src="icons/01d.png" alt="Icon">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="savedSearchContend">
+
+        </div>
 
     </div>
 
-    <script src="scriptt.js" type="module"></script>
+    <div class="footer">
+
+    </div>
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>
