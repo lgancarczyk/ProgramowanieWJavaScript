@@ -1,5 +1,8 @@
 document.querySelector("#left-slider-button").addEventListener('click', moveLeft);
 document.querySelector("#right-slider-button").addEventListener("click", moveRight);
+document.querySelector(".slider-slide").addEventListener("mouseover", mouseOverSlider);
+document.querySelector(".slider-slide").addEventListener("mouseleave", mouseFromSlider);
+
 const sliderNavButtonsContainer = document.querySelector('.slider-nav-buttons-container');
 const sliderSlide = document.querySelector('.slider-slide');
 
@@ -7,12 +10,21 @@ const widthPx = 600;
 const slidesCount = 5;
 let counter = 0;
 
-let moveRightInterval = window.setInterval(moveRight, 5000);
+const interval = 2000;
+
+let moveRightInterval = window.setInterval(moveRight, interval);
 
 setup();
 function setup(){
   setupRandomSlides();
   setupSliderNavButtons();
+}
+
+function mouseOverSlider(){
+  clearInterval(moveRightInterval);
+}
+function mouseFromSlider(){
+  moveRightInterval = window.setInterval(moveRight, interval);
 }
 
 function setupRandomSlides(){
@@ -68,7 +80,7 @@ function moveLeft(){
 
 function resetMoveRightInterval(){
   clearInterval(moveRightInterval);
-  moveRightInterval = window.setInterval(moveRight, 5000);
+  moveRightInterval = window.setInterval(moveRight, interval);
 }
 
 function transformImages(){
