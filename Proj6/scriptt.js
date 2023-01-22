@@ -7,6 +7,7 @@ const context = canvas.getContext('2d');
 
 const width = canvas.width;
 const height = canvas.height;
+const lineLenght = 80;
 
 let buttonIsDisplayingStart = true;
 
@@ -96,7 +97,7 @@ class Ball {
             const a = this.x - ball.x
             const b = this.y - ball.y
             const c = Math.sqrt( a*a + b*b )
-            if (c < 80) {
+            if (c < lineLenght) {
                 context.beginPath();
                 context.moveTo(this.x, this.y);
                 context.lineTo(ball.x, ball.y);
