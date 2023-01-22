@@ -4,9 +4,14 @@ document.querySelector(".searchButton").addEventListener('click', FindForecast);
 document.addEventListener("DOMContentLoaded", function(){
     LaunchWebsite()
 });
-
-const apiKey = '77b2473f1f828502796df1ad31f99392';
+const opwApiKey = "50d53005c0fd5f556bb4ef15224c4209";
 const mainSearchContainerId = "mainSearchForecast";
+
+document.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      FindForecast();
+    }
+  });
 
 async function FindForecast(){
     let cityNameInput = document.querySelector('.searchInput').value;
@@ -16,13 +21,14 @@ async function FindForecast(){
     const mainSearch = document.querySelector(`#${mainSearchContainerId}`)
 
     const weatherData = await GetWeather(cityNameInput);
-
+    
     UpdateForecast(weatherData, mainSearch); 
+    LoadPreviousForecast()
 }
 
 function LaunchWebsite(){
-    //load main forecast
     LoadMainForecast()
+    LoadPreviousForecast()
 }
 
 async function LoadMainForecast(){
@@ -40,45 +46,67 @@ async function LoadMainForecast(){
     const currentSearchContent = document.querySelector(".currentSearchContent");
     currentSearchContent.appendChild(newForecast);
 
-    UpdateForecast(weatherData, newForecast); 
+    UpdateForecast(await weatherData, newForecast); 
 }
 
- async function GetWeather(cityName){
-    const coordinates = await GetCityCoordinatesCall(cityName);
-    console.log(coordinates);
-    const weatherData = await GetWeatherCall(coordinates);
-    weatherData.city = coordinates.name;
-    console.log(weatherData);
-    return weatherData;
-}
+async function LoadPreviousForecast(){
+    const cities = GetAllFromLocalStorage();
+    console.log(GetAllFromLocalStorage());
 
-async function GetCityCoordinatesCall(cityInput){
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=5&appid=${apiKey}`)
-    const data = await response.json();
-    console.log(data)
-    return {name: data[0].name, lat: data[0].lat, lon: data[0].lon}
-}
-
-async function GetWeatherCall(coordinates){
-    // const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=hourly,daily&appid=${apiKey}`)
-    // const data = await response.json();
-
-    const response = await fetch(`${coordinates.name}.json`)
-    const data = await response.json();
-    console.log(data)
-
-    const weatherData = {
-        name: coordinates.name,
-        description: data.current.weather[0].description,
-        iconNumber: data.current.weather[0].icon,
-        tempearature: data.current.temp,
-        humidity: data.current.humidity,
-        windSpeed: data.current.wind_speed,
-        pressure: data.current.pressure,
-        time: new Date().toLocaleString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false, timeZone: data.timezone })
+    const savedSearchContent = document.querySelector(".savedSearchContend");
+    while (savedSearchContent.firstChild) {
+        savedSearchContent.removeChild(savedSearchContent.firstChild);
     }
 
-    return weatherData;
+    for (let index = cities.length-2; index >= 0; index--) {
+        const element = cities[index];
+        console.log(element);
+
+        const weatherData = await GetWeather(element);
+
+        const egzampleForecast = document.querySelector('#egzampleForecast')
+        const newForecast = egzampleForecast.cloneNode(true);
+        newForecast.setAttribute('id', `previousForecast-${index}` );
+
+        
+        savedSearchContent.appendChild(newForecast);
+
+        UpdateForecast(await weatherData, newForecast); 
+    }
+}
+
+function GetWeather(cityName){
+    const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${opwApiKey}&units=metric`;
+    const weather = fetch(openWeatherUrl);
+
+    return weather
+      .then((respObject) => {
+        return respObject.json();
+      })
+      .then((pogoda) => {
+        const weatherData = {
+            name: pogoda.name,
+            description: pogoda.weather[0].description,
+            iconNumber: pogoda.weather[0].icon,
+            tempearature: pogoda.main.temp,
+            humidity: pogoda.main.humidity,
+            windSpeed: pogoda.wind.speed,
+            pressure: pogoda.main.pressure,
+            time: GetCityTime(pogoda.timezone)
+        }
+        AddToLocalStorage(pogoda.name);
+        return weatherData
+      })
+      .catch((e) => {
+        console.error("Catched exception: ", e);
+      })
+}
+
+function GetCityTime(offset){
+    var d = new Date();
+    var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    var nd = new Date(utc + (1000*offset));
+    return nd.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
 }
 
 function UpdateForecast(weatherData, element){
@@ -89,4 +117,23 @@ function UpdateForecast(weatherData, element){
     element.querySelector(".humidityContainer p").textContent = `${weatherData.humidity}%`;
     element.querySelector(".pressureContainer p").textContent = `${weatherData.pressure}pha`;
     element.querySelector(".windContainer p").textContent = `${weatherData.windSpeed} km/h`;
+}
+
+function GetAllFromLocalStorage(){
+    const cityNames = JSON.parse(localStorage.getItem('cityNames'));
+        if (cityNames == null) {
+            return []
+        }
+        return cityNames
+}
+
+function AddToLocalStorage(cityName){
+    const cityNames = GetAllFromLocalStorage()
+    if(!cityNames.includes(cityName.toLowerCase() )){
+        if (cityNames.length >= 4){
+            cityNames.shift();
+        }
+        cityNames.push(cityName.toLowerCase() )
+        localStorage.setItem("cityNames", JSON.stringify(cityNames))
+    }
 }
